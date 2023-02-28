@@ -6,19 +6,19 @@ defineProps({
 });
 </script>
 <template>
-  <div class="Card_scroll bg-white p-4 overflow-hidden relative">
+  <div class="Card_scroll bg-white p-4 overflow-hidden relative z">
     <h4>
-      <span class="text-xl md:text-2xl font-bold">{{ dataCard.title }}</span>
+      <span class="sm-text-lg md:text-2xl font-bold">{{ dataCard.title }}</span>
       <NuxtLink
         :to="`/products/${dataCard.productType}`"
-        class="text-blue-500 hover:text-blue-700"
+        class="whitespace-nowrap text-sm sm-text-md ml-2 text-blue-500 hover:text-blue-700"
       >
         See more
       </NuxtLink>
     </h4>
 
     <div
-      class="content w-full flex items-center overflow-x-scroll scroll-smooth"
+      class="content mt-5 w-full flex items-center overflow-x-scroll scroll-smooth"
     >
       <div
         class="
@@ -32,8 +32,8 @@ defineProps({
           justify-center
           bg-white
           absolute
-          z-20
-          opacity-30
+          z
+          opacity-0
           cursor-pointer
           shadow-[0_0_5px_0px]
           right-0
@@ -41,7 +41,7 @@ defineProps({
         "
         @click="
           (e) => {
-            // 4* 3.6
+
             const parent = e.target.parentElement;
             parent.scrollLeft += (parent.offsetWidth / 10) * 8;
           }
@@ -61,8 +61,8 @@ defineProps({
           justify-center
           bg-white
           absolute
-          z-20
-          opacity-30
+          z
+          opacity-0
           cursor-pointer
           shadow-[0_0_5px_0px]
           left-0
@@ -79,9 +79,9 @@ defineProps({
       </div>
       <NuxtLink
         v-for="item in dataCard.items"
-        :key="item.creator"
-        class="m-2.5"
-        :to="`/product/${item.creator}`"
+        :key="item._id"
+        class="m-4"
+        :to="`/product/${item._id}`"
       >
         <img :src="item.imgUrl" class="max-w-[250px] max-h-[200px]" alt="" />
       </NuxtLink>
@@ -98,7 +98,7 @@ defineProps({
       -ms-border-radius: 10px;
       -o-border-radius: 10px;
       border-radius: 10px;
-      background: #b4b4b449;
+      background: #b4b4b44d;
     }
 
     &::-webkit-scrollbar-thumb:hover {

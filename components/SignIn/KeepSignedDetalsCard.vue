@@ -4,14 +4,19 @@ const emit = defineEmits(["ShowDetalsCard"]);
 const ShowDetalsCard = () => {
   emit("ShowDetalsCard");
 };
-
 </script>
 
 <template>
   <div class="border border-gray-400 w-full rounded">
-    <div class="bg-gray-200 p-2 flex justify-between border-b border-gray-400 font-bold md:text-lg">
+    <div
+      class="bg-gray-200 p-2 flex justify-between border-b border-gray-400 font-bold md:text-lg"
+    >
       "Keep Me Signed In" Checkbox
-      <Icon name="iwwa:delete" class="text-xl font-bold cursor-pointer" @click="ShowDetalsCard"/>
+      <Icon
+        name="iwwa:delete"
+        class="text-xl font-bold cursor-pointer"
+        @click="ShowDetalsCard"
+      />
     </div>
     <div class="bg-gray-100 p-3 py-4">
       <p class="">

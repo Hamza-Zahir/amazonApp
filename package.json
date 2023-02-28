@@ -21,7 +21,10 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.0",
     "nitropack": "^2.1.1",
+    "nuxt-tailvue": "^1.0.95",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tw-elements": "^1.0.0-alpha13"
+    "tw-elements": "^1.0.0-alpha13",
+    "vue-carousel": "^0.18.0",
+    "vue3-carousel": "^0.2.9"
   }
 }

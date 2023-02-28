@@ -1,5 +1,7 @@
 <script setup>
-const numberOfAllitems = ref("99");
+// const numberOfAllitems = ref("99");
+const TotalItemsInCart =  useState("TotalItemsInCart");
+
 </script>
 <template>
   <nuxt-link
@@ -13,8 +15,9 @@ const numberOfAllitems = ref("99");
           alt=""
           class="w-full h-full absolute inset-0"
         />
-        <span class="h5 font-black text-orange-400 absolute inset-0 pl-1">
-          {{ numberOfAllitems }}
+        <span class="h5 font-black text-orange-400 absolute inset-0 pl-1 text-sm">
+          <span v-if="TotalItemsInCart < 99">{{TotalItemsInCart}}</span>
+          <span v-else><sup>+</sup>99</span>
         </span>
       </div>
       <span class="self-end hidden sm:block font-bold">Cart </span>

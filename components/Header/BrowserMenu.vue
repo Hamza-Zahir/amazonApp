@@ -9,7 +9,7 @@ const showAccountMenu = useState("ShowAccountMenu");
 </script>
 
 <template>
-  <div class="top-0" :class="showBrowserMenu ? 'fixed' : 'absolute'">
+  <div class="top-0 z-50" :class="showBrowserMenu ? 'fixed' : 'absolute'">
     <div
       class="bg-black w-full h-full opacity-80 fixed inset-0"
       @click="

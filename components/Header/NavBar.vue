@@ -3,7 +3,6 @@ const showBrowserMenu = useState("ShowBrowserMenu");
 </script>
 
 <template>
-<!--   snap-mandatory -->
   <div
     class="NavBar flex items-center p-0.5 overflow-x-auto flex-nowrap whitespace-nowrap scrollbar-hide"
   >

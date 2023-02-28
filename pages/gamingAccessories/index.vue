@@ -1,25 +1,102 @@
+<script setup>
+const gamingAccessories = [
+  {
+    type: "nintendo",
+    img: "https://m.media-amazon.com/images/I/61p7KWU8POL._AC_UY218_.jpg",
+  },
+  {
+    type: "oculus",
+    img: "https://m.media-amazon.com/images/I/615YaAiA-ML._AC_UY218_.jpg",
+  },
+  {
+    type: "laptops",
+    img: "https://m.media-amazon.com/images/I/71zWWrtLStL._AC_UY218_.jpg",
+  },
+  {
+    type: "controllers",
+    img: "https://m.media-amazon.com/images/I/81kKfnnHeuL._AC_UY218_.jpg",
+  },
+  {
+    type: "playstation",
+    img: "https://m.media-amazon.com/images/I/71TNU43c6lL._AC_UY218_.jpg",
+  },
+  {
+    type: "video games",
+    img: "https://m.media-amazon.com/images/I/91KgYsQNJQL._AC_UY218_.jpg",
+  },
+  {
+    type: "headsets",
+    img: "https://m.media-amazon.com/images/I/61CGHv6kmWL._AC_UY218_.jpg",
+  },
+  {
+    type: "keyboards",
+    img: "https://m.media-amazon.com/images/I/71pPm31LFkS._AC_SX679_.jpg",
+  },
+  {
+    type: "chairs",
+    img: "https://m.media-amazon.com/images/I/71y8rPagzDL._AC_UL320_.jpg",
+  },
+  {
+    type: "gaming mice",
+    img: "https://m.media-amazon.com/images/I/611jbF+FbbL._AC_SL1500_.jpg",
+  },
+  {
+    type: "apparel",
+    img: "https://m.media-amazon.com/images/I/71NB1Z5wJ5S._AC_UL320_.jpg",
+  },
+  {
+    type: "action figures",
+    img: "https://m.media-amazon.com/images/I/71qddHX6kJL._AC_UL320_.jpg",
+  },
+  {
+    type: "hats",
+    img: "https://m.media-amazon.com/images/I/71qxdcNAY8L._AC_UL320_.jpg",
+  },
+  {
+    type: "mugs",
+    img: "https://m.media-amazon.com/images/I/71wVRz-t3sS._AC_UL320_.jpg",
+  },
+];
+</script>
 <template>
-  <div class="">
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ducimus fugit
-    nobis amet assumenda. Sapiente, aliquid sit incidunt repellendus quis enim
-    quibusdam itaque excepturi nobis voluptatem harum, voluptas dolorum optio
-    distinctio. Ratione fugiat incidunt fuga necessitatibus, impedit vitae
-    ducimus eius, voluptate autem illo, rem delectus aliquam. Dolorum, animi.
-    Perferendis tenetur, corporis vero, quasi voluptate quo ducimus
-    necessitatibus ullam culpa odit quis fugit impedit eligendi fugiat commodi
-    nam reiciendis modi earum id sapiente recusandae sit. Saepe soluta ad aut
-    maiores molestias ab perferendis exercitationem, ullam, vel eveniet qui
-    sequi impedit libero molestiae rerum. Cum, amet! Odio nihil aliquid
-    laboriosam labore et autem iste, eveniet neque explicabo minus excepturi
-    praesentium. Nostrum, consequatur doloremque mollitia numquam voluptate est
-    minus molestiae fugiat. Reiciendis repellat nihil magnam incidunt natus fuga
-    recusandae quis numquam quasi facere eveniet dolor earum facilis perferendis
-    provident porro cumque praesentium, accusamus quo, alias, excepturi dolorem.
-    Deleniti iure magnam et nisi sed, doloremque esse. At nemo est nihil atque
-    porro deleniti! Placeat amet consectetur repudiandae delectus, sapiente
-    pariatur! Illum quasi distinctio, facere nulla impedit sit! Maxime explicabo
-    autem quae. Porro sapiente obcaecati, sed voluptatem explicabo ea eum,
-    consequatur doloribus iusto corrupti ducimus dicta quis in vero! Nesciunt
-    porro reiciendis, velit unde consequatur amet.
+  <div class="bg-white p-1 md:p-3">
+    <img
+      class="w-full"
+      src="https://images-na.ssl-images-amazon.com/images/G/01/AmazonExports/Fuji/2021/June/Fuji_LPHeader_Gamers_en_US.png"
+      alt=""
+    />
+    <h2 class="text-center my-4 py-3 text-2xl font-bold">
+      Featured Categories
+    </h2>
+
+    <div class="grid 
+    gap-5 
+    md:gap-[25px] 
+    xl:gap-[35px] 
+    grid-cols-1 
+    sm:grid-cols-2
+    md:grid-cols-3
+    xl:grid-cols-5
+    
+    
+    ">
+      <nuxt-link
+        v-for="item in gamingAccessories"
+        :key="item.type"
+        :to="`/products/${item.type}`"
+        class="text-center flex flex-col justify-between"
+      >
+        <img
+          :src="item.img"
+          alt=""
+          class="mx-auto max-w-[250px] max-h-[150px] my-auto"
+        />
+        <span class="mt-5 text-lg font-semibold block justify-self-end">{{
+          item.type
+        }}</span>
+      </nuxt-link>
+    </div>
   </div>
 </template>
+
+

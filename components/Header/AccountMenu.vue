@@ -116,7 +116,7 @@ const { logoutHandler } = useAuth();
   </div>
   <!-- ..... Small Divaises ..... -->
   <div
-    class="top-0 w-full md:hidden"
+    class="top-0 w-full md:hidden z-50"
     :class="showAccountMenu ? 'fixed' : 'absolute'"
   >
     <div

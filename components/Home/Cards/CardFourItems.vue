@@ -7,8 +7,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="bg-white p-3.5 text-sm flex flex-col justify-between">
-    <h2 class="text-xl lg:text-2xl font-bold text-start mb-2">
+  <div class="bg-white p-3.5 text-sm flex flex-col justify-between max-w-[430px] mx-auto">
+    <h2 class="lg:text-2xl font-bold text-start mb-2">
       {{ cardInfo.title }}
     </h2>
     <div class="w-full flex flex-wrap">

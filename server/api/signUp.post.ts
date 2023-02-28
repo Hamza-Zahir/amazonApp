@@ -7,12 +7,12 @@ export default defineEventHandler(async (e) => {
   const {JWT_SWNTENSCE} = useRuntimeConfig();
 
   let body = await readBody(e);
-  // let { error } = await userSchema.validate(body);
+
   let { error } = await userSchema.validateAsync(body);
 
   if (error) {
     throw createError({
-      message: error.statusMessage.replace(/"/g, ""),
+      statusMessage: error.statusMessage.replace(/"/g, ""),
       statusCode: 400,
       fatal: false,
     });

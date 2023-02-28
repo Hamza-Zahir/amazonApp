@@ -2,8 +2,14 @@ export default defineNuxtPlugin(async () => {
   useState("Country", () => "");
   useState("UserName", () => "");
   useState("isLoggedIn", () => false);
-  const { checkIsLoggedIn } = useAuth();
+  useState("UserCart", () => []);
+  useState("TotalPricesInCart", () => 0);
+  useState("TotalItemsInCart", () => 0);
+  useState("isGiftInCartItems", () => false);
 
-  // check If the user has Logged in
- await checkIsLoggedIn();
+  const { checkIsLoggedIn } = useAuth();
+  const { loadTotalItemsInCart } = useCart();
+
+  await checkIsLoggedIn();
+  await loadTotalItemsInCart(null);
 });

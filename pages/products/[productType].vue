@@ -1,19 +1,47 @@
+<script setup>
+const { getProductsByType } = useProduct();
+const route = useRoute();
+const productType = route.params.productType;
+const Products = ref(null);
+
+onMounted(async () => {
+  try {
+    const products = await getProductsByType(productType);
+
+    Products.value = products;
+  } catch (error) {
+    throw error;
+  }
+});
+</script>
+
 <template>
-    <div class="">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem pariatur officia praesentium illo assumenda
-        harum aut inventore in nostrum asperiores repellendus ea fugiat, corporis ratione magnam labore sint porro? Illo
-        ducimus officiis beatae et facilis debitis nostrum, dolore saepe quis nemo, aliquam asperiores perferendis sequi
-        culpa sunt minima, excepturi incidunt quisquam quasi eos recusandae provident necessitatibus similique! Eum
-        provident quaerat molestias deleniti esse quibusdam neque reiciendis iure maiores at dolor est, incidunt
-        voluptatum impedit consequuntur quo mollitia quia repellendus qui quas tenetur! Numquam quae cum ullam incidunt
-        ipsa, vero perferendis veniam! Voluptates nemo quas amet, voluptatum totam ullam doloribus architecto
-        repudiandae consectetur sequi ipsam minima explicabo dignissimos voluptas. Voluptas delectus suscipit ad iusto
-        aperiam consequatur architecto, soluta commodi, voluptates numquam alias, rerum vitae reprehenderit odio
-        quibusdam magni. In doloremque recusandae temporibus est doloribus aspernatur, maxime adipisci asperiores sed
-        sequi, saepe possimus id placeat nesciunt aperiam fuga quam consequatur odio praesentium unde, totam nulla quasi
-        perferendis. Saepe in, officia repudiandae vel ipsam consequuntur doloremque sint vero, similique sed fugit
-        inventore atque explicabo, provident blanditiis ex! Unde autem quo illo. Reiciendis molestias deserunt
-        exercitationem asperiores eaque eius provident minus quidem autem, ab obcaecati ad sequi at quam! Similique cum
-        aliquid corrupti labore?
+  <div class="">
+    <div class="bg-gray-100">
+      <div class="title shadow-md bg-gray-100">
+        <div v-if="Products" class="font-medium pl-5 py-2">
+          <span class="text-sm">
+            1-{{ Products.length }} of over {{ Products.length }}
+          </span>
+          results for
+          <span class="text-red-600 font-bold text-lg"
+            >"{{ productType }}"</span
+          >
+        </div>
+      </div>
+
+      <div class="flex my-1">
+        <div class="min-w-fit xl:min-w-[280px] p-4 hidden sm:block">
+          <ProductsSidbar />
+        </div>
+        <div class="p-2 lg:p-4 w-full">
+          <h4 class="m-3 text-xl font-bold">RESULTS</h4>
+          <div v-if="Products">
+              <ProductsItemCard v-for="product in Products" :key="product._id" :product="product" />
+            
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>

@@ -3,6 +3,7 @@ const useAuth = () => {
   const userName = useState("UserName");
   const isLoggedIn = useState("isLoggedIn");
   const country = useState("Country");
+const {loadTotalItemsInCart} = useCart();
 
   const { loadLocation } = useAmazon();
 
@@ -70,9 +71,10 @@ const useAuth = () => {
       userName.value = _userName;
       isLoggedIn.value = true;
       country.value = location || (await loadLocation());
-
+      await loadTotalItemsInCart(userId);
       setAutoLogout(_remainingMilliseconds);
       navigateTo("/");
+      
     } catch (error) {
       throw error;
     }
@@ -82,6 +84,8 @@ const useAuth = () => {
     isLoggedIn.value = false;
     userName.value = "";
     country.value = await loadLocation();
+    await loadTotalItemsInCart(null);
+
     navigateTo("/signIn");
   };
   const setAutoLogout = (milliseconds: any) => {

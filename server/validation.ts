@@ -1,8 +1,6 @@
 import Joi from "joi";
 import User from "./models/user";
-  // const isAuth =  definePageMeta({
-  //   middleware: "is-auth",
-  // });
+
 export const userSchema = Joi.object({
   email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
@@ -30,10 +28,16 @@ export const productSchema = Joi.object({
   currentPrice: Joi.number().required(),
   oldPrice: Joi.number(),
   creator: Joi.required(),
-
 });
 
 export const commentSchema = Joi.object({
   comment: Joi.string().required(),
   creator: Joi.required(),
+});
+
+export const cartSchema = Joi.object({
+  userId: Joi.string().required(),
+  productId: Joi.string().required(),
+  quantity: Joi.number().min(1).required(),
+  isGift: Joi.boolean(),
 });

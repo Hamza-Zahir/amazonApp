@@ -42,9 +42,9 @@ const productSchema = new Schema(
     },
   }
 );
-// Schema.Types.Mixed
+
 export default model("Product", productSchema);
-// {
+// {// Schema.Types.Mixed
 //   "_id": ObjectId("53ccff9bbb25567911f208a8"),
 
 //   "tags": {

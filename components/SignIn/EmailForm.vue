@@ -16,7 +16,7 @@ const handleSubmit = async () => {
       signInError.value = "We cannot find an account with that email address";
       return;
     }
-    userEmail.value = email.value
+    userEmail.value = email.value;
   } catch (error) {
     throw error;
   }
@@ -24,7 +24,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="border border-gray-300 rounded-md my-5 p-5  w-full">
+  <div class="border border-gray-300 rounded-md my-5 p-5 w-full">
     <h3 class="text-3xl font-bold mb-3">Sign in</h3>
     <label class="block font-semibold p-1 text-sm">Email Address</label>
     <input

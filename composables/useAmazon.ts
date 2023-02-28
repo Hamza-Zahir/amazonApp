@@ -1,10 +1,8 @@
 const useAmazon = () => {
-  //   const isLoggedIn = useState("isLoggedIn");
   const country = useState("Country");
   const { GEOAPIFY_API_KEY } = useRuntimeConfig();
 
   const loadLocation = async () => {
-    // const user = useCookie<any>("user");    // const location: any = user.value ? user.value.location : undefined;
     const location: any = useCookie("location").value;
     const _country = location || (await getCountry());
     return _country;
@@ -17,8 +15,6 @@ const useAmazon = () => {
     const userLocationData = await resp.json();
     const _country = userLocationData.country.names.en;
     return _country;
-
-    // await getLocationByUSzipCode();
   };
   const getLocationByUSzipCode = async (postcode: any) => {
     try {
@@ -40,9 +36,6 @@ const useAmazon = () => {
     } catch (error) {
       throw error;
     }
-
-    // let numbers = _location.replace(/[^0-9]/g,"");
-    // console.log(numbers);
   };
   return { loadLocation, getCountry, getLocationByUSzipCode };
 };

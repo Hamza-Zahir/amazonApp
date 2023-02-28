@@ -7,14 +7,12 @@ const locationChosen = ref("");
 const usAddress = ref("");
 const postCode = ref("");
 const CurrentLocation = ref("");
-// selectedCountry.value = country.value;
 const showDeliverToCard = useState("ShowDeliverToCard", () => false);
 const { ChooseLocation } = useLocation();
-const { getLocationByUSzipCode, getCountry } = useAmazon(); //await getLocationByUSzipCode(95110)
+const { getLocationByUSzipCode, getCountry } = useAmazon(); 
 postCode.value = country.value.replace(/[^0-9]/g, "");
 if (postCode.value) {
   usAddress.value = country.value;
-  // selectedCountry.value = "";
 }
 const GetLocationByUSzipCode = async () => {
   locationError.value = "";
@@ -47,9 +45,9 @@ const GetCurrentLocation = async () => {
 };
 </script>
 <template>
-  <div class="text-sm">
+  <div class="text-sm ">
     <div
-      class="bg-black w-full h-full opacity-70 fixed inset-0  z-10"
+      class="bg-black w-full h-full opacity-70 fixed inset-0 z-40"
       @click="
         () => {
           showDeliverToCard = !showDeliverToCard;
@@ -57,7 +55,7 @@ const GetCurrentLocation = async () => {
       "
     ></div>
     <div
-      class="z-20 bg-white rounded-md fixed right-1/2 bottom-1/2 translate-y-2/4 translate-x-2/4 max-h-full overflow-y-scroll scrollbar-hide"
+      class="z-50 bg-white rounded-md fixed right-1/2 bottom-1/2 translate-y-2/4 translate-x-2/4 max-h-full overflow-y-scroll scrollbar-hide"
     >
       <div class="max-w-[350px] min-w-[300px]">
         <div class="bg-gray-300 p-4 font-bold text-xl">
@@ -144,7 +142,6 @@ const GetCurrentLocation = async () => {
               }
             "
           >
-            <!-- v-if="usAddress" :v-model="usAddress"-->
             <option hidden>Ship outside the US</option>
             <option
               v-for="Country in Countries"

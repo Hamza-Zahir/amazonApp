@@ -30,11 +30,11 @@ const cardsInfo = reactive({
     title3: "Baby",
     title4: "Toys & Games",
     productType1: "/products/computers",
-    productType2: "/products/gaming+video_games",
-    productType3: "/products/baby_products",
+    productType2: "/products/video games",
+    productType3: "/products/baby products",
     productType4: "/products/toys",
     link: "Shop now",
-    page: "/amazon_basics",
+    page: "/products/amazon basics",
   },
   card_3: {
     title: "Beauty picks",
@@ -87,51 +87,33 @@ const cardsInfo = reactive({
 });
 </script>
 <template>
-  <div class="Section_1 z-10">
-    <CardsCardFourItems :cardInfo="cardsInfo.card_1" />
-    <CardsCardFourItems :cardInfo="cardsInfo.card_2" class="text-center" />
-    <CardsCardOneItem :cardInfo="cardsInfo.card_3" />
+  <div
+    class="
+      grid
+      gap-[15px]
+      xl:gap-5
+      grid-cols-1
+      sm:grid-rows-4 sm:grid-cols-2
+      md:grid-rows-3 md:grid-cols-3
+      xl:grid-rows-2 xl:grid-cols-4
+      z-[20]
+    "
+  >
+    <HomeCardsCardFourItems :cardInfo="cardsInfo.card_1" />
+    <HomeCardsCardFourItems :cardInfo="cardsInfo.card_2" class="text-center" />
+    <HomeCardsCardOneItem :cardInfo="cardsInfo.card_3" />
 
-    <CardsSignInCard v-if="!isLoggedIn" />
-    <CardsCardOneItem v-else :cardInfo="cardsInfo.card_4" />
+    <HomeCardsSignInCard v-if="!isLoggedIn" />
+    <HomeCardsCardOneItem v-else :cardInfo="cardsInfo.card_4" />
 
-    <CardsCardOneItem :cardInfo="cardsInfo.card_5" />
-    <CardsCardOneItem :cardInfo="cardsInfo.card_6" />
-    <CardsCardOneItem :cardInfo="cardsInfo.card_7" />
-    <CardsCardOneItem :cardInfo="cardsInfo.card_8" />
+    <HomeCardsCardOneItem :cardInfo="cardsInfo.card_5" />
+    <HomeCardsCardOneItem :cardInfo="cardsInfo.card_6" />
+    <HomeCardsCardOneItem :cardInfo="cardsInfo.card_7" />
+    <HomeCardsCardOneItem :cardInfo="cardsInfo.card_8" />
 
     <div class="hidden md:flex xl:hidden">
-      <CardsCardOneItem :cardInfo="cardsInfo.card_9" />
+      <HomeCardsCardOneItem :cardInfo="cardsInfo.card_9" />
     </div>
   </div>
 </template>
-<style lang="scss" scoped>
-.Section_1 {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 15px;
-  width: 100%;
-  padding: 15px;
 
-  @media (min-width: 426px) {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-  }
-
-  @media (min-width: 1024px) {
-    gap: 25px;
-  }
-
-  @media (min-width: 1280px) {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    padding: 20px;
-    gap: 20px;
-  }
-}
-</style>
