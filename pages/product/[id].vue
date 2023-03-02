@@ -4,16 +4,20 @@ const route = useRoute();
 const productId = route.params.id;
 const product = ref(null);
 const products = ref(null);
+const loading = ref(false);
 const Save = (old_price, current_price) => {
   const saved = old_price - current_price;
   return `$${saved.toFixed(2)} (${(saved / (old_price / 100)).toFixed(0)}%)`;
 };
 onMounted(async () => {
   try {
+    loading.value = true;
     const _product = await getProductById(productId);
     product.value = _product;
+    loading.value = false;
     const productType = _product.productType;
     products.value = await getProductsByType(productType);
+    
   } catch (error) {
     throw error;
   }
@@ -22,6 +26,9 @@ onMounted(async () => {
 <template>
   <div class="">
     <ProductHead v-if="products" :products="products" />
+    <div v-if="loading && !product" class="mt-[25px]">
+      <Loading />
+    </div>
     <div v-if="product" class="bg-white p-2">
       <div class="product_Card font-medium py-4 flex f-full">
         <div class="hidden sm:block p-3 min-w-[35%] max-w-1/2">
@@ -68,7 +75,10 @@ onMounted(async () => {
             <!-- end  Price and  Saved -->
 
             <div class="xl:hidden">
-              <ProductBuyBox :currentPrice="Number(product.currentPrice)" :productId="product._id" />
+              <ProductBuyBox
+                :currentPrice="Number(product.currentPrice)"
+                :productId="product._id"
+              />
             </div>
 
             <div class="lg:border-t py-2">
@@ -115,7 +125,10 @@ onMounted(async () => {
           </div>
 
           <div class="hidden xl:block min-w-[260px] max-w-full">
-            <ProductBuyBox :currentPrice="Number(product.currentPrice)"  :productId="product._id"  />
+            <ProductBuyBox
+              :currentPrice="Number(product.currentPrice)"
+              :productId="product._id"
+            />
           </div>
         </div>
       </div>

@@ -1,14 +1,16 @@
 const useCart = () => {
   const { getProductById } = useProduct();
   const userCart = useState("UserCart");
+  const userCartSaveForLater = useState("UserCartSaveForLater");
   const TotalPricesInCart: any = useState("TotalPricesInCart");
   const TotalItemsInCart = useState("TotalItemsInCart");
   const isGiftInCartItems = useState("isGiftInCartItems");
+
   const addItemToDB = async (body: any) => {
     try {
       const user = useCookie<any>("user");
 
-      const cartItem = await $fetch(`/api/cart/addItem`, {
+      const cartItem: any = await $fetch(`/api/cart/addItem`, {
         method: "post",
         body,
         headers: {
@@ -21,18 +23,19 @@ const useCart = () => {
       throw error;
     }
   };
-  const loadTotalItemsInCart = async (_userId:any) => {
+  const loadTotalItemsInCart = async () => {
     try {
       const user: any = useCookie("user");
+
       TotalItemsInCart.value = 0;
-    
-      if (!user.value && !_userId) {
+      if (!user.value) {
         return;
       }
 
-      let _userCart: any = await $fetch(
-        `/api/cart/userCart/${user.value.userId || _userId}`
-      );
+      const Cart: any = await $fetch(`/api/cart/userCart/${user.value.userId}`);
+      // userSaveForLater
+
+      let _userCart: any = Cart.userCart;
       if (!_userCart.length) {
         return;
       }
@@ -47,38 +50,49 @@ const useCart = () => {
   const loadUserCart = async () => {
     try {
       const user: any = useCookie("user");
+      if (!user.value) {
+        return;
+      }
 
-      let _userCart: any = await $fetch(
-        `/api/cart/userCart/${user.value.userId}`
-      );
+      const Cart: any = await $fetch(`/api/cart/userCart/${user.value.userId}`);
+
+      let _userCart: any = Cart.userCart;
+      let _userCartSaveForLater: any = Cart.userCartSaveForLater;
+
       userCart.value = [];
       TotalPricesInCart.value = 0;
       TotalItemsInCart.value = 0;
       isGiftInCartItems.value = false;
 
-      if (!_userCart.length) {
-        return _userCart;
+      if (_userCart.length) {
+        _userCart = await Promise.all(
+          _userCart.map(async (item: any) => {
+            const product = await getProductById(item.productId);
+
+            return { ...item, product };
+          })
+        );
+
+        _userCart.map((item: any) => {
+          TotalPricesInCart.value += item.quantity * item.product.currentPrice;
+          TotalItemsInCart.value += item.quantity;
+          if (item.isGift) {
+            isGiftInCartItems.value = item.isGift;
+          }
+        });
+      }
+      if (_userCartSaveForLater.length) {
+        _userCartSaveForLater = await Promise.all(
+          _userCartSaveForLater.map(async (item: any) => {
+            const product = await getProductById(item.productId);
+
+            return { ...item, product };
+          })
+        );
       }
 
-      _userCart = await Promise.all(
-        _userCart.map(async (item: any) => {
-          const product = await getProductById(item.productId);
-
-          return { ...item, product };
-        })
-      );
-
-      _userCart.map((item: any) => {
-        TotalPricesInCart.value += item.quantity * item.product.currentPrice;
-        TotalItemsInCart.value += item.quantity;
-        if (item.isGift) {
-          isGiftInCartItems.value = item.isGift;
-        }
-      });
-
       userCart.value = _userCart;
-
-      return _userCart;
+      userCartSaveForLater.value = _userCartSaveForLater;
     } catch (error) {
       throw error;
     }
@@ -122,18 +136,36 @@ const useCart = () => {
     try {
       const user = useCookie<any>("user");
 
-      const cartItem = await $fetch(`/api/cart/${cartId}`, {
+      const deletedState = await $fetch(`/api/cart/${cartId}`, {
         method: "delete",
         headers: {
           authentication: user.value.token,
         },
       });
 
-      return cartItem;
+      return deletedState;
     } catch (error) {
       throw error;
     }
   };
+  const AddToSaveForLater = async (cartId: String) => {
+    try {
+      const user = useCookie<any>("user");
+
+      
+     const savedState =  await $fetch(`/api/cart/SaveForLater/${cartId}`, {
+        method: "put",
+        headers: {
+          authentication: user.value.token,
+        },
+      });
+
+      return savedState;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return {
     addItemToDB,
     loadUserCart,
@@ -141,6 +173,7 @@ const useCart = () => {
     modifyQuantity,
     loadTotalItemsInCart,
     deleteItem,
+    AddToSaveForLater,
   };
 };
 

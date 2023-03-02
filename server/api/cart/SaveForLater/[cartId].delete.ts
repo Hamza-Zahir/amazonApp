@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
     }
 
     await Cart.remove({ _id: cartId });
-    await User.findOneAndUpdate({ _id: userId }, { $pull: { cart: cartId } });
+    await User.findOneAndUpdate({ _id: userId }, { $pull: { SaveForLater: cartId } });
 
 // $pull: { 'likers': req.params.name }
     return true;

@@ -22,6 +22,17 @@ const userSchema = new Schema({
       ref: 'Product'
     }
   ],
+  cart: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Cart'
+    }
+  ],
+  SaveForLater: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Cart'
+    }
+  ],
 });
-
 export default  model('User', userSchema);

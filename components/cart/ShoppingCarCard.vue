@@ -1,6 +1,6 @@
 
 <script setup>
-const { modifyIsGift, modifyQuantity, loadUserCart, deleteItem } = useCart();
+const { modifyIsGift, modifyQuantity, loadUserCart, deleteItem, AddToSaveForLater } = useCart();
 const props = defineProps({
   item: {
     required: true,
@@ -40,10 +40,22 @@ const removeItem = async () => {
 
     }
   } catch (error) {
-    console.log(error);
+    throw error
+
   }
 };
- 
+const saveForLater = async () => {
+  try {
+    const res = await AddToSaveForLater(_id);
+    if (res) {
+      await loadUserCart();
+
+    }
+  } catch (error) {
+    throw error
+  }
+};
+//  AddToSaveForLater
 </script>
 
 <template>
@@ -56,7 +68,7 @@ const removeItem = async () => {
         <img :src="product.imgUrl" alt="img" class="max-w-full max-h-[170px]" />
       </NuxtLink>
       <div class="p-2 sm:w-2/3 md:w-3/4 xl:w-4/5">
-        <div class="md:flex gap-5">
+        <div class="md:flex gap-5 justify-between">
           <NuxtLink
             :to="`/product/${product._id}`"
             class="hover:underline hover:text-blue-600 description"
@@ -116,7 +128,7 @@ const removeItem = async () => {
           <div class="opacity-50 mx-2">|</div>
           <div class="cursor-pointer text-blue-500 text-sm  hover:underline hover:text-blue-700" @click="removeItem">Delet</div>
           <div class="opacity-50 mx-2">|</div>
-          <div class="cursor-pointer text-blue-500 text-sm hover:underline hover:text-blue-700" >Save For Later</div>
+          <div class="cursor-pointer text-blue-500 text-sm hover:underline hover:text-blue-700" @click="saveForLater">Save For Later</div>
         </div>
       </div>
     </div>

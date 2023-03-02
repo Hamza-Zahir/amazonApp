@@ -1,6 +1,11 @@
 <script setup>
-// const numberOfAllitems = ref("99");
+
 const TotalItemsInCart =  useState("TotalItemsInCart");
+const { loadTotalItemsInCart } = useCart();
+onMounted(async()=>{
+await loadTotalItemsInCart();
+
+})
 
 </script>
 <template>

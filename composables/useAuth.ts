@@ -3,8 +3,7 @@ const useAuth = () => {
   const userName = useState("UserName");
   const isLoggedIn = useState("isLoggedIn");
   const country = useState("Country");
-const {loadTotalItemsInCart} = useCart();
-
+  const TotalItemsInCart = useState("TotalItemsInCart");
   const { loadLocation } = useAmazon();
 
   const SignUp = async (data: any) => {
@@ -70,11 +69,12 @@ const {loadTotalItemsInCart} = useCart();
 
       userName.value = _userName;
       isLoggedIn.value = true;
-      country.value = location || (await loadLocation());
-      await loadTotalItemsInCart(userId);
+      if (location) {
+        country.value = location;
+      }
+
       setAutoLogout(_remainingMilliseconds);
       navigateTo("/");
-      
     } catch (error) {
       throw error;
     }
@@ -83,8 +83,8 @@ const {loadTotalItemsInCart} = useCart();
     useCookie("user").value = null;
     isLoggedIn.value = false;
     userName.value = "";
+    TotalItemsInCart.value = 0;
     country.value = await loadLocation();
-    await loadTotalItemsInCart(null);
 
     navigateTo("/signIn");
   };
@@ -100,7 +100,7 @@ const {loadTotalItemsInCart} = useCart();
       return;
     }
     const { expiryDate, userId } = user.value;
-    const { location, name }: any = await getUserById(userId);
+    const { name, location }: any = await getUserById(userId);
 
     const remainingMilliseconds =
       new Date(expiryDate).getTime() - new Date().getTime();

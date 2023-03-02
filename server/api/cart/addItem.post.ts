@@ -40,7 +40,7 @@ export default defineEventHandler(async (event) => {
         quantity,
         isGift,
       });
-
+      await User.findOneAndUpdate({ _id: userId }, { $push: { cart: cartItemRespons._id } });
       return cartItemRespons;
     }
     cartItem.quantity = cartItem.quantity + quantity;

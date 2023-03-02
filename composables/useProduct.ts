@@ -6,8 +6,9 @@ const useProduct = () => {
       const products = await $fetch(`/api/products/${_productType}`);
       if (!products.length) {
         throw createError({
+          message: "Page not found",
           statusCode: 404,
-          statusMessage: "page not found",
+          fatal: true,
         });
       }
       return products;
@@ -22,6 +23,8 @@ const useProduct = () => {
         throw createError({
           statusCode: 404,
           statusMessage: "page not found",
+          fatal: true,
+
         });
       }
       return product;

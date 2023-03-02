@@ -1,40 +1,30 @@
 <script setup>
 const { getProductsByType } = useProduct();
-
-const dataCards = reactive({
-  card_1: null,
-  card_2: null
-});
+const loading = ref(false);
+const fitnessProducts = ref([]);
+const householdProducts = ref([]);
 onMounted(async () => {
- const fitnessProducts = await getProductsByType("fitness");
-  dataCards.card_1 = {
-  items: fitnessProducts,
-    title: "Best selling sports products",
-    productType: "fitness",
- }
- const householdProducts = await getProductsByType("household products");
- dataCards.card_2 = {
-    items: householdProducts,
-    title: "International top sellers in Home",
-    productType: "household products",
-  }
+  loading.value = true;
+  fitnessProducts.value = await getProductsByType("fitness");
 
-
+  householdProducts.value = await getProductsByType("household products");
+  loading.value = false;
 });
-
-
 </script>
 <template>
-  <div
-    class="
-      grid grid-cols-1 
-      grid-rows-2
-      gap-[15px]
-      xl:gap-[20px]
-    "
-  >
-    <HomeCardsScrollCard v-if="dataCards.card_1" :dataCard="dataCards.card_1" />
-    <HomeCardsScrollCard v-if="dataCards.card_2" :dataCard="dataCards.card_2" />
+  <div class="grid grid-cols-1 grid-rows-2 gap-[15px] xl:gap-[20px]">
+    <HomeCardsScrollCard
+      :items="fitnessProducts"
+      title="Best selling sports products"
+      productType="fitness"
+      :loading="loading"
+    />
+    <HomeCardsScrollCard
+      :items="householdProducts"
+      title="International top sellers in Home"
+      productType="household products"
+      :loading="loading"
+    />
   </div>
 </template>
 

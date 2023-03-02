@@ -1,23 +1,16 @@
 <script setup>
 const { getProductsByType } = useProduct();
+const beautyProducts = ref([]);
+const KitchenProducts = ref([]);
+const loading = ref(false);
 
-const dataCards = reactive({
-  card_1: null,
-  card_2: null
-});
 onMounted(async () => {
- const KitchenProducts = await getProductsByType("kitchen");
-  dataCards.card_1 = {
-    items: KitchenProducts,
-    title: "Best selling in Kitchen",
-    productType: "Kitchen",
-  }
- const beautyProducts = await getProductsByType("beauty");
- dataCards.card_2 = {
-    items: beautyProducts,
-    title: "Popular products in Beauty internationally",
-    productType: "beauty",
-  }
+  
+  loading.value = true;
+  KitchenProducts.value = await getProductsByType("kitchen");
+  beautyProducts.value = await getProductsByType("beauty");
+  loading.value = false;
+
 
 });
 
@@ -30,9 +23,21 @@ onMounted(async () => {
       xl:gap-5
 
     "
-  >
-    <HomeCardsScrollCard v-if="dataCards.card_1" :dataCard="dataCards.card_1" />
-    <HomeCardsScrollCard v-if="dataCards.card_2" :dataCard="dataCards.card_2" />
+  > 
+   <HomeCardsScrollCard
+      :items="KitchenProducts"
+      title="Best selling in Kitchen"
+    productType="Kitchen"
+      :loading="loading"
+    />
+      <HomeCardsScrollCard
+      :items="beautyProducts"
+      title="Popular products in Beauty internationally"
+      productType="beauty"
+      :loading="loading"
+    />
+  
+   
   </div>
 </template>
 

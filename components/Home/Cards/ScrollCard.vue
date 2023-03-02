@@ -1,47 +1,49 @@
 <script setup>
-defineProps({
-  dataCard: {
-    type: Object,
+// import { any } from "joi";
+
+// import { object } from "joi";
+
+// import { AnyMap } from '@jridgewell/trace-mapping';
+
+ defineProps({
+    items: {
+      type: Array,
+    },
+    title: {
+      type: String,
+    },
+    productType: {
+      type: String,
+    },
+  //  dataCard: {},
+  loading: {
+    type: Boolean,
   },
 });
 </script>
 <template>
   <div class="Card_scroll bg-white p-4 overflow-hidden relative z">
     <h4>
-      <span class="sm-text-lg md:text-2xl font-bold">{{ dataCard.title }}</span>
+      <span class="sm-text-lg md:text-2xl font-bold">{{ title }}</span>
       <NuxtLink
-        :to="`/products/${dataCard.productType}`"
+        :to="`/products/${productType}`"
         class="whitespace-nowrap text-sm sm-text-md ml-2 text-blue-500 hover:text-blue-700"
       >
         See more
       </NuxtLink>
     </h4>
 
-    <div
+    <div class="" v-if="!items.length && loading">
+     <Loading />
+    </div>
+
+    <div v-else
       class="content mt-5 w-full flex items-center overflow-x-scroll scroll-smooth"
     >
       <div
-        class="
-          btn_scrol
-          text-xl
-          font-bold
-          w-[40px]
-          h-[30%]
-          flex
-          items-center
-          justify-center
-          bg-white
-          absolute
-          z
-          opacity-0
-          cursor-pointer
-          shadow-[0_0_5px_0px]
-          right-0
-          rounded-l-md
-        "
+        class="btn_scrol text-xl font-bold w-[40px] h-[30%] flex items-center justify-center bg-white absolute z opacity-0 cursor-pointer shadow-[0_0_5px_0px] right-0 rounded-l-md"
         @click="
           (e) => {
-
             const parent = e.target.parentElement;
             parent.scrollLeft += (parent.offsetWidth / 10) * 8;
           }
@@ -50,24 +52,7 @@ defineProps({
         &gt;
       </div>
       <div
-        class="
-          btn_scrol
-          text-xl
-          font-bold
-          w-[40px]
-          h-[30%]
-          flex
-          items-center
-          justify-center
-          bg-white
-          absolute
-          z
-          opacity-0
-          cursor-pointer
-          shadow-[0_0_5px_0px]
-          left-0
-          rounded-r-md
-        "
+        class="btn_scrol text-xl font-bold w-[40px] h-[30%] flex items-center justify-center bg-white absolute z opacity-0 cursor-pointer shadow-[0_0_5px_0px] left-0 rounded-r-md"
         @click="
           (e) => {
             const parent = e.target.parentElement;
@@ -78,7 +63,7 @@ defineProps({
         &lt;
       </div>
       <NuxtLink
-        v-for="item in dataCard.items"
+        v-for="item in items"
         :key="item._id"
         class="m-4"
         :to="`/product/${item._id}`"

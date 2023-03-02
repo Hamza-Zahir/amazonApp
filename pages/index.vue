@@ -11,9 +11,9 @@ useHead({
       <HomeSection2 />
       <HomeSection3 />
       <HomeSection4 />
-       <HomeSection5 />
+      <HomeSection5 />
       <HomeSection6 />
     </div>
-    <HomeHistorySection />
+    <HomeHistorySection /> 
   </div>
 </template>

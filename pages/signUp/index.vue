@@ -1,5 +1,6 @@
 <script setup>
-definePageMeta({ layout: "custom" });
+  
+definePageMeta({layout: "custom", middleware: "auth" });
 useHead({
   title: "Amazon Registration",
 });

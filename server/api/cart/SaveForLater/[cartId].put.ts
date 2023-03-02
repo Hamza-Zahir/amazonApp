@@ -1,4 +1,3 @@
-import Cart from "~~/server/models/cart";
 import User from "~~/server/models/user";
 import jwt from "jsonwebtoken";
 
@@ -20,11 +19,14 @@ export default defineEventHandler(async (event) => {
         statusMessage: "Unauthorized",
       });
     }
-
-    await Cart.remove({ _id: cartId });
-    await User.findOneAndUpdate({ _id: userId }, { $pull: { cart: cartId } });
-
-// $pull: { 'likers': req.params.name }
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { SaveForLater: cartId } }
+    );
+    await User.findOneAndUpdate(
+      { _id: userId },
+      { $pull: { cart: cartId } }
+    );
     return true;
   } catch (error) {
     throw error;

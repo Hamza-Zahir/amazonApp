@@ -28,13 +28,10 @@ export default defineEventHandler(async (event) => {
     const isGift = body.isGift;
     const quantity = body.quantity;
 
-    console.log("isGift", typeof isGift, isGift);
-    console.log("quantity", typeof quantity, quantity);
-
     if (quantity) {
       cartItem.quantity = Number(quantity);
       cartItem.save();
-      return { 1: cartItem };
+      return true;
     } else {
       const sameCartitem = await Cart.findOne({
         isGift,
@@ -46,13 +43,13 @@ export default defineEventHandler(async (event) => {
 
       if (!sameCartitem || sameCartitem._id === cartId) {
         cartItem.save();
-        return { 2: cartItem };
+        return true;
       }
       cartItem.quantity = cartItem.quantity + sameCartitem.quantity;
-
+      await User.findOneAndUpdate({ _id: userId }, { $pull: { cart: sameCartitem._id } });
       sameCartitem.remove();
       cartItem.save();
-      return { 3: cartItem };
+      return true;
     }
   } catch (error) {
     throw error;

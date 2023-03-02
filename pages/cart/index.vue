@@ -1,19 +1,21 @@
 <script setup>
 const { loadUserCart } = useCart();
 const isLoggedIn = useState("isLoggedIn");
-const TotalPricesInCart =useState("TotalPricesInCart");
-const TotalItemsInCart =  useState("TotalItemsInCart");
-const isGiftInCartItems =  useState("isGiftInCartItems");
+const TotalPricesInCart = useState("TotalPricesInCart");
+const TotalItemsInCart = useState("TotalItemsInCart");
+const isGiftInCartItems = useState("isGiftInCartItems");
 const userCart = useState("UserCart");
+const userCartSaveForLater = useState("UserCartSaveForLater");
 
 const savedItem = ref([]);
 const savedForLater = ref(true);
 const BuyItAgain = ref(false);
+const loading = ref(false);
 
 onMounted(async () => {
-
+  loading.value = true;
   await loadUserCart();
-
+  loading.value = false;
 });
 </script>
 
@@ -30,14 +32,22 @@ onMounted(async () => {
                 {{ TotalPricesInCart.toFixed(2) }}
               </span>
             </div>
-            <div class="my-2 ">
-              <input type="checkbox" :checked="isGiftInCartItems"
-               @click="(e)=>{
-                e.preventDefault()
-              }" />
+            <div class="my-2">
+              <input
+                type="checkbox"
+                :checked="isGiftInCartItems"
+                @click="
+                  (e) => {
+                    e.preventDefault();
+                  }
+                "
+              />
               <label class="ml-1">
-                {{ isGiftInCartItems ? 'This order contains a gift' : 'This order does not contain a gift'}}
-                
+                {{
+                  isGiftInCartItems
+                    ? "This order contains a gift"
+                    : "This order does not contain a gift"
+                }}
               </label>
             </div>
             <button
@@ -52,12 +62,14 @@ onMounted(async () => {
             Products related to items in your cart
           </h6>
           <span class="text-xs">Sponsored</span>
-        
         </div>
       </div>
 
       <div class="body lg:w-2/3 xl:w-3/4">
-        <div class="">
+        <div v-if="loading" class="py-[25px] bg-white">
+          <Loading />
+        </div>
+        <div v-else class="">
           <div v-if="userCart.length" class="bg-white p-4">
             <h4 class="font-bold text-2xl py-1.5">Shopping Cart</h4>
             <div class="border"></div>
@@ -111,16 +123,17 @@ onMounted(async () => {
               <h4 class="text-xl md:text-2xl lg:text-3xl font-semibold p-2">
                 Your Amazon Cart is empty
               </h4>
-              <p class="py-4 text-lg">
+              <p v-if="userCartSaveForLater.length" class="py-4 text-lg">Check your Saved for later items below or <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> continue shopping </NuxtLink>.</p>
+              <p v-else class="py-4 text-lg">
                 Your Shopping Cart lives to serve. Give it purpose — fill it
                 with groceries, clothing, household supplies, electronics, and
                 more. Continue shopping on the
-                <NuxtLink to="/" class="text-blue-500">
+                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline">
                   Amazon homepage</NuxtLink
                 >, learn about
-                <NuxtLink to="/" class="text-blue-500"> today's deals</NuxtLink
+                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> today's deals</NuxtLink
                 >, or visit your
-                <NuxtLink to="/" class="text-blue-500"> Wish List</NuxtLink>.
+                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> Wish List</NuxtLink>.
               </p>
             </div>
           </div>
@@ -165,7 +178,7 @@ onMounted(async () => {
               </div>
             </div>
             <div class="border-t py-4">
-              <div v-if="savedForLater" class="my-3"></div>
+              <div v-if="savedForLater" class="my-3">{{ userCartSaveForLater }}</div>
               <div v-if="BuyItAgain" class="">No items to Buy again.</div>
             </div>
           </div>
@@ -181,114 +194,5 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-    
-  </div>  
+  </div>
 </template>
-<!-- <div class="p-2 lg:p-4 min-h-[100vh]">
-    <div
-      v-if="userCart.length"
-      class="md:flex md:flex-row-reverse gap-2 lg:gap-4 w-full"
-    >
-      <div class="md:w-1/3 xl:w-1/4">
-        <div class="bg-white mb-3 p-4">
-          <div class="text-lg font-medium">
-            Subtotal ({{ TotalItemsInCart }} items):
-            <span class="font-bold text-xl">
-              <sup>$</sup>
-              {{ TotalPricesInCart.toFixed(2) }}
-            </span>
-          </div>
-          <div class="my-2">
-            <input type="checkbox" name="" id="isGiftInCartItems" v-model="isGiftInCartItems" />
-            <label for="isGiftInCartItems" class="cursor-pointer">
-              This order contains a gift
-            </label>
-          </div>
-          <button
-            class="bg-yellow-400 mt-3 w-full rounded-lg p-1.5 font-medium"
-          >
-            Proceed to checkout
-          </button>
-        </div>
-        <div class="bg-white mb-3 p-4 border rounded-xl">
-          <h6 class="font-semibold text-lg">
-            Products related to items in your cart
-          </h6>
-          <span class="text-xs">Sponsored</span>
-        </div>
-      </div>
-      <div class="bg-white p-3 md:w-2/3 xl:w-3/4">
-        <h4 class="font-bold text-2xl py-1.5">Shopping Cart</h4>
-        <div class="border"></div>
-        <div class="">
-          <div v-for="item in userCart" :key="item._id" class="">
-            <shopping_card :item="item" />
-            {{ item.product._id }}
-          </div>
-        </div>
-        <div class="text-lg text-end font-bold py-3">
-          Subtotal ({{ TotalItemsInCart }} items):
-          <span class="font-bold text-xl">
-            <sup>$</sup>
-            {{ TotalPricesInCart.toFixed(2) }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div v-else class="bg-white w-full p-3">
-      <div
-        v-if="!isLoggedIn"
-        class="sm:flex items-center gap-4 md:gap-[40px] lg:gap-[60px]"
-      >
-        <div class="w-full sm:w-8/12 md:w-7/12">
-          <img
-            src="https://m.media-amazon.com/images/G/01/cart/empty/kettle-desaturated._CB445243794_.svg"
-            alt=""
-            class="w-full max-w-[300px] md:max-w-full mx-auto"
-          />
-        </div>
-        <div class="w-full my-2">
-          <h4 class="text-xl md:text-2xl lg:text-3xl font-bold p-2">
-            Your Amazon Cart is empty
-          </h4>
-          <div class="text-sm md:text-lg">
-            <NuxtLink
-              to="/signIn"
-              class="bg-amber-400 border border-amber-500 rounded-md py-1 px-2 my-2 font-medium inline-block"
-            >
-              Sign in to your account
-            </NuxtLink>
-
-            <NuxtLink
-              to="/signUp"
-              class="bg-gray-100 border border-gray-200 rounded-md py-1 px-2 ml-2 my-2 font-medium whitespace-nowrap inline-block"
-            >
-              Sign up now
-            </NuxtLink>
-          </div>
-        </div>
-      </div>
-      <div v-else class="">
-        <h4 class="text-xl md:text-2xl lg:text-3xl font-bold p-2">
-          Your Amazon Cart is empty
-        </h4>
-        <p>
-          Your Shopping Cart lives to serve. Give it purpose — fill it with
-          groceries, clothing, household supplies, electronics, and more.
-          Continue shopping on the
-          <NuxtLink to="/" class="text-blue-500"> Amazon homepage</NuxtLink>,
-          learn about
-          <NuxtLink to="/" class="text-blue-500"> today's deals</NuxtLink>, or
-          visit your
-          <NuxtLink to="/" class="text-blue-500"> Wish List</NuxtLink>.
-        </p>
-      </div>
-    </div>
-    <div class="text-xs py-3">
-      The price and availability of items at Amazon.com are subject to change.
-      The Cart is a temporary place to store a list of your items and reflects
-      each item's most recent price. Shopping CartLearn more Do you have a gift
-      card or promotional code? We'll ask you to enter your claim code when it's
-      time to pay.
-    </div>
-  </div> -->
