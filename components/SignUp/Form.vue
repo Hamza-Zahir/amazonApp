@@ -5,6 +5,8 @@ const ShowPassword = ref(false);
 const PasswordInfo = ref(true);
 const userData = ref(null);
 const signUpError = useState("SignUpError");
+const country = useState("Country");
+
 const inputsErrors = reactive({
   name: null,
   email: null,
@@ -49,14 +51,14 @@ const handleSubmit = async () => {
     return;
   }
   try {
+
     await SignUp({
       email: formData.email,
       name: formData.name,
       password: formData.password,
+      location: country.value,
     });
-    //  const isSignUp = if (isSignUp) {
-    //   navigateTo("/");
-    // }
+  
   } catch (error) {
     signUpError.value = error.statusMessage;
   }

@@ -15,6 +15,7 @@ const userSchema = new Schema({
   },
   location: {
     type: String,
+
   },
   products: [
     {
