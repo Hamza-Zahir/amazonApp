@@ -166,6 +166,41 @@ const useCart = () => {
     }
   };
 
+  const DeleteFromSaveForLater = async (cartId: String) => {
+    try {
+      const user = useCookie<any>("user");
+
+      
+     const DeleteState =  await $fetch(`/api/cart/SaveForLater/${cartId}`, {
+        method: "delete",
+        headers: {
+          authentication: user.value.token,
+        },
+      });
+
+      return DeleteState;
+    } catch (error) {
+      throw error;
+    }
+  };
+// MoveToCart
+const MoveToCart = async (cartId: String) => {
+  try {
+    const user = useCookie<any>("user");
+
+    
+   const MovedState =  await $fetch(`/api/cart/SaveForLater/MoveToCart/${cartId}`, {
+      method: "put",
+      headers: {
+        authentication: user.value.token,
+      },
+    });
+
+    return MovedState;
+  } catch (error) {
+    throw error;
+  }
+};
   return {
     addItemToDB,
     loadUserCart,
@@ -174,6 +209,8 @@ const useCart = () => {
     loadTotalItemsInCart,
     deleteItem,
     AddToSaveForLater,
+    DeleteFromSaveForLater,
+    MoveToCart
   };
 };
 

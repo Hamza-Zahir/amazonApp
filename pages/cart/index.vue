@@ -123,17 +123,37 @@ onMounted(async () => {
               <h4 class="text-xl md:text-2xl lg:text-3xl font-semibold p-2">
                 Your Amazon Cart is empty
               </h4>
-              <p v-if="userCartSaveForLater.length" class="py-4 text-lg">Check your Saved for later items below or <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> continue shopping </NuxtLink>.</p>
+              <p v-if="userCartSaveForLater.length" class="py-4 text-lg">
+                Check your Saved for later items below or
+                <NuxtLink
+                  to="/"
+                  class="text-blue-500 hover:text-orange-500 hover:underline"
+                >
+                  continue shopping </NuxtLink
+                >.
+              </p>
               <p v-else class="py-4 text-lg">
                 Your Shopping Cart lives to serve. Give it purpose — fill it
                 with groceries, clothing, household supplies, electronics, and
                 more. Continue shopping on the
-                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline">
+                <NuxtLink
+                  to="/"
+                  class="text-blue-500 hover:text-orange-500 hover:underline"
+                >
                   Amazon homepage</NuxtLink
                 >, learn about
-                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> today's deals</NuxtLink
+                <NuxtLink
+                  to="/"
+                  class="text-blue-500 hover:text-orange-500 hover:underline"
+                >
+                  today's deals</NuxtLink
                 >, or visit your
-                <NuxtLink to="/" class="text-blue-500 hover:text-orange-500 hover:underline"> Wish List</NuxtLink>.
+                <NuxtLink
+                  to="/"
+                  class="text-blue-500 hover:text-orange-500 hover:underline"
+                >
+                  Wish List</NuxtLink
+                >.
               </p>
             </div>
           </div>
@@ -178,7 +198,15 @@ onMounted(async () => {
               </div>
             </div>
             <div class="border-t py-4">
-              <div v-if="savedForLater" class="my-3">{{ userCartSaveForLater }}</div>
+              <div v-if="savedForLater" class="my-3">
+                <div class="flex flex-wrap justify-center sm:justify-start" v-if="userCartSaveForLater.length">
+                 
+                    <CartSaveForLaterCart v-for="item in userCartSaveForLater"
+                    :key="item._id" :item="item" />
+                 
+                  
+                </div>
+              </div>
               <div v-if="BuyItAgain" class="">No items to Buy again.</div>
             </div>
           </div>
