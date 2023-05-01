@@ -157,7 +157,8 @@ onMounted(async () => {
               </p>
             </div>
           </div>
-          <div v-if="isLoggedIn" class="bg-white p-3 mt-5">
+          <!-- v-if="isLoggedIn" -->
+          <div  class="bg-white p-3 mt-5">
             <h4 class="text-xl md:text-2xl lg:text-3xl font-bold p-2">
               Your Items
             </h4>
@@ -176,8 +177,8 @@ onMounted(async () => {
                 "
               >
                 {{
-                  savedItem.length
-                    ? `Saved for later (${savedItem.length} item)`
+                  userCartSaveForLater.length
+                    ? `Saved for later (${userCartSaveForLater.length} item)`
                     : "No items saved for later"
                 }}
               </div>

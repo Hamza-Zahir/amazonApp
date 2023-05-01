@@ -1,7 +1,7 @@
 <script setup>
 const Country = useState("Country");
 const showDeliverToCard = useState("ShowDeliverToCard");
-const { addItemToDB } = useCart();
+const { addItemToCart } = useCart();
 const quantity = ref(1);
 const isGift = ref(false);
 
@@ -27,9 +27,9 @@ const maxDeliveryMonth = new Date(maxDeliveryDate).toLocaleString("en-us", {
   month: "short",
 });
 
-const addItemToCart = async () => {
+const AddItemToCart = async () => {
   try {
-    await addItemToDB({
+    await addItemToCart({
       quantity: quantity.value,
       isGift: isGift.value,
       productId,
@@ -106,7 +106,7 @@ const addItemToCart = async () => {
 
     <button
       class="block w-[90%] my-3 mx-auto font-semibold rounded-xl p-1.5 bg-yellow-400"
-      @click="addItemToCart"
+      @click="AddItemToCart"
     >
       Add to card
     </button>

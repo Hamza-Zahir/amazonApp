@@ -1,3 +1,5 @@
+import { object } from "joi";
+
 const useCart = () => {
   const { getProductById } = useProduct();
   const userCart = useState("UserCart");
@@ -6,19 +8,37 @@ const useCart = () => {
   const TotalItemsInCart = useState("TotalItemsInCart");
   const isGiftInCartItems = useState("isGiftInCartItems");
 
-  const addItemToDB = async (body: any) => {
+  const addItemToCart = async (body: any) => {
     try {
       const user = useCookie<any>("user");
+      if (user.value) {
+        await $fetch(`/api/cart/addItem`, {
+          method: "post",
+          body,
+          headers: {
+            authentication: user.value.token,
+          },
+        });
+        return;
+      }
 
-      const cartItem: any = await $fetch(`/api/cart/addItem`, {
-        method: "post",
-        body,
-        headers: {
-          authentication: user.value.token,
-        },
+      const userCart = useCookie<any>("userCart");
+      if (!userCart.value) {
+        userCart.value = [body];
+        return;
+      }
+      let isItemInCart = false;
+      userCart.value.forEach((_item: any) => {
+        if (body.productId === _item.productId) {
+          _item.quantity += body.quantity;
+          isItemInCart = true;
+          return;
+        }
       });
-
-      return cartItem;
+      if (isItemInCart) {
+        return;
+      }
+      userCart.value = [...userCart.value, body];
     } catch (error) {
       throw error;
     }
@@ -29,6 +49,13 @@ const useCart = () => {
 
       TotalItemsInCart.value = 0;
       if (!user.value) {
+        const userCart = useCookie<any>("userCart");
+        if (userCart.value) {
+          userCart.value.map((item: any) => {
+            TotalItemsInCart.value += item.quantity;
+          });
+        }
+
         return;
       }
 
@@ -50,14 +77,24 @@ const useCart = () => {
   const loadUserCart = async () => {
     try {
       const user: any = useCookie("user");
+
+      let _userCart: any = [];
+      let _userCartSaveForLater: any = [];
+
       if (!user.value) {
-        return;
+        const userCart = useCookie<any>("userCart");
+        if(userCart.value){
+          _userCart = userCart.value;
+        }
+        
+        _userCartSaveForLater = [];
+      } else {
+        const Cart: any = await $fetch(
+          `/api/cart/userCart/${user.value.userId}`
+        );
+        _userCart = Cart.userCart;
+        _userCartSaveForLater = Cart.userCartSaveForLater;
       }
-
-      const Cart: any = await $fetch(`/api/cart/userCart/${user.value.userId}`);
-
-      let _userCart: any = Cart.userCart;
-      let _userCartSaveForLater: any = Cart.userCartSaveForLater;
 
       userCart.value = [];
       TotalPricesInCart.value = 0;
@@ -152,8 +189,7 @@ const useCart = () => {
     try {
       const user = useCookie<any>("user");
 
-      
-     const savedState =  await $fetch(`/api/cart/SaveForLater/${cartId}`, {
+      const savedState = await $fetch(`/api/cart/SaveForLater/${cartId}`, {
         method: "put",
         headers: {
           authentication: user.value.token,
@@ -170,8 +206,7 @@ const useCart = () => {
     try {
       const user = useCookie<any>("user");
 
-      
-     const DeleteState =  await $fetch(`/api/cart/SaveForLater/${cartId}`, {
+      const DeleteState = await $fetch(`/api/cart/SaveForLater/${cartId}`, {
         method: "delete",
         headers: {
           authentication: user.value.token,
@@ -183,26 +218,28 @@ const useCart = () => {
       throw error;
     }
   };
-// MoveToCart
-const MoveToCart = async (cartId: String) => {
-  try {
-    const user = useCookie<any>("user");
+  // MoveToCart
+  const MoveToCart = async (cartId: String) => {
+    try {
+      const user = useCookie<any>("user");
 
-    
-   const MovedState =  await $fetch(`/api/cart/SaveForLater/MoveToCart/${cartId}`, {
-      method: "put",
-      headers: {
-        authentication: user.value.token,
-      },
-    });
+      const MovedState = await $fetch(
+        `/api/cart/SaveForLater/MoveToCart/${cartId}`,
+        {
+          method: "put",
+          headers: {
+            authentication: user.value.token,
+          },
+        }
+      );
 
-    return MovedState;
-  } catch (error) {
-    throw error;
-  }
-};
+      return MovedState;
+    } catch (error) {
+      throw error;
+    }
+  };
   return {
-    addItemToDB,
+    addItemToCart,
     loadUserCart,
     modifyIsGift,
     modifyQuantity,
@@ -210,7 +247,7 @@ const MoveToCart = async (cartId: String) => {
     deleteItem,
     AddToSaveForLater,
     DeleteFromSaveForLater,
-    MoveToCart
+    MoveToCart,
   };
 };
 
